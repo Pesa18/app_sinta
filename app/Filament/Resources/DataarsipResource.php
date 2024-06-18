@@ -14,10 +14,13 @@ use App\Models\Masterpencipta;
 use App\Models\Masterpengolah;
 use Filament\Resources\Resource;
 use App\Models\Masterklasifikasi;
+use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Date;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -52,7 +55,8 @@ class DataarsipResource extends Resource
                     Select::make('pencipta_id')
                         ->label('Pencipta')
                         ->options(Masterpencipta::all()->pluck('nama_pencipta', 'id'))
-                        ->required(),
+                        ->required()
+                        ->placeholder('Pilih Pencipta'),
                     Select::make('pengolah_id')
                         ->label('Pengolah')
                         ->options(Masterpengolah::all()->pluck('nama_pengolah', 'id'))
@@ -80,7 +84,7 @@ class DataarsipResource extends Resource
                         ->autosize(),
                     TextInput::make('jumlah_arsip')->label('Jumlah Arsip')->required(),
                     TextInput::make('no_box')->label('Nomor Box')->required(),
-                    FileUpload::make('file_arsip')
+                    FileUpload::make('file_arsip')->required()
 
 
 
@@ -92,13 +96,21 @@ class DataarsipResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('noarsip')->label('No. Arsip'),
+                TextColumn::make('nama_arsip')->label('Nama'),
+                TextColumn::make('user.name')->label('User'),
+                IconColumn::make('file_arsip')
+                    ->icon('heroicon-s-qr-code')->action(Action::make('select')
+                        ->requiresConfirmation())
+
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -119,7 +131,7 @@ class DataarsipResource extends Resource
         return [
             'index' => Pages\ListDataarsips::route('/'),
             'create' => Pages\CreateDataarsip::route('/create'),
-            'edit' => Pages\EditDataarsip::route('/{record}/edit'),
+            'edit' => Pages\EditDataarsip::route('/{record}'),
         ];
     }
 }
