@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
@@ -22,6 +23,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ColumnGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,14 +51,19 @@ class DataarsipResource extends Resource
                     'xl' => 2,
                     '2xl' => 2,
                 ])->schema([
-                    TextInput::make('noarsip')->label('Nomor Arsip')->required(),
+                    TextInput::make('noarsip')->label('Nomor Arsip')->rules([
+                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                            if ($value === 'foo') {
+                                $fail('The :attribute is invalid.');
+                            }
+                        },
+                    ]),
                     TextInput::make('nama_arsip')->label('Nama Arsip')->required(),
                     DatePicker::make('tanggal_arsip')->label('Tanggal Arsip')->native(false)->required()->placeholder(Carbon::now()->toFormattedDateString()),
                     Select::make('pencipta_id')
                         ->label('Pencipta')
                         ->options(Masterpencipta::all()->pluck('nama_pencipta', 'id'))
-                        ->required()
-                        ->placeholder('Pilih Pencipta'),
+                        ->required(),
                     Select::make('pengolah_id')
                         ->label('Pengolah')
                         ->options(Masterpengolah::all()->pluck('nama_pengolah', 'id'))
@@ -84,7 +91,7 @@ class DataarsipResource extends Resource
                         ->autosize(),
                     TextInput::make('jumlah_arsip')->label('Jumlah Arsip')->required(),
                     TextInput::make('no_box')->label('Nomor Box')->required(),
-                    FileUpload::make('file_arsip')->required()
+                    FileUpload::make('file_arsip')
 
 
 
@@ -96,21 +103,13 @@ class DataarsipResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('noarsip')->label('No. Arsip'),
-                TextColumn::make('nama_arsip')->label('Nama'),
-                TextColumn::make('user.name')->label('User'),
-                IconColumn::make('file_arsip')
-                    ->icon('heroicon-s-qr-code')->action(Action::make('select')
-                        ->requiresConfirmation())
-
-
+                //
             ])
             ->filters([
                 //
-            ])
+            ])->modifyQueryUsing(fn (Builder $query) => $query->where('arsip_pegawai_id', NULL))
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
