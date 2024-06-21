@@ -101,18 +101,24 @@ class DataarsipResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('No')
+                    ->rowIndex(),
                 TextColumn::make('noarsip')->label('No. Arsip'),
                 TextColumn::make('nama_arsip')->label('Nama Arsip'),
                 TextColumn::make('user.name')->label('User')->badge()->color('success'),
                 ColumnGroup::make('File', [
                     IconColumn::make('file_arsip')->label('File')->icon('heroicon-s-document')->url(fn (Dataarsip $record): string => url($record->file_arsip))
                         ->openUrlInNewTab(),
-                    IconColumn::make('QR'),
+                    IconColumn::make('')->icon('heroicon-s-qr-code')->label('QR')->state(function ($record) {
+                        return $record->file_arsip;
+                    }),
                 ]),
             ])
             ->filters([
                 //
-            ])->modifyQueryUsing(fn (Builder $query) => $query->where('arsip_pegawai_id', NULL))
+            ])->modifyQueryUsing(function (Builder $query) {
+                return  $query->where('arsip_pegawai_id', NULL);
+            })
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()->label('hapus'),
