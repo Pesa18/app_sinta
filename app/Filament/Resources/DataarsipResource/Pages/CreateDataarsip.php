@@ -13,6 +13,13 @@ class CreateDataarsip extends CreateRecord
 {
     protected static string $resource = DataarsipResource::class;
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['user_id'] = auth()->id();
+
+        return $data;
+    }
+
     public function mount(): void
     {
         parent::mount();

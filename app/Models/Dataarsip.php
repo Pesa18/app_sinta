@@ -17,14 +17,14 @@ class Dataarsip extends Model
     protected $guarded = ['id'];
     protected $primaryKey = 'uuid';
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($model) {
-            $model->user_id = auth()->user()->id;
-        });
-    }
+    //     static::creating(function ($model) {
+    //         $model->user_id = auth()->user()->id;
+    //     });
+    // }
 
 
 
