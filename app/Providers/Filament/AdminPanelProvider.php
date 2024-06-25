@@ -2,36 +2,40 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Resources\ArsippegawaiResource;
+use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissions;
+use Filament\Pages;
+use Filament\Panel;
+use Filament\Widgets;
+use App\Models\Dataarsip;
+use Filament\PanelProvider;
+use Filament\Pages\Dashboard;
+use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationItem;
+use Filament\Navigation\NavigationGroup;
+use Filament\Http\Middleware\Authenticate;
+use Filament\Navigation\NavigationBuilder;
 use App\Filament\Resources\DataarsipResource;
 use App\Filament\Resources\ImportdataResource;
-use App\Filament\Resources\PengaturanklasifikasiResource;
-use App\Filament\Resources\PengaturanlokasiResource;
+use Illuminate\Session\Middleware\StartSession;
+use App\Filament\Resources\ArsippegawaiResource;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use App\Filament\Resources\SirkulasiarsipResource;
 use App\Filament\Resources\PengaturanmediaResource;
+use App\Filament\Resources\PengaturanlokasiResource;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 use App\Filament\Resources\PengaturanpenciptaResource;
 use App\Filament\Resources\PengaturanpenggunaResource;
 use App\Filament\Resources\PengaturanpengolahResource;
-use App\Filament\Resources\SirkulasiarsipResource;
-use App\Models\Dataarsip;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationBuilder;
-use Filament\Navigation\NavigationGroup;
-use Filament\Navigation\NavigationItem;
-use Filament\Pages;
-use Filament\Pages\Dashboard;
-use Filament\Panel;
-use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
-use Filament\Widgets;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use App\Filament\Resources\PengaturanklasifikasiResource;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use Althinect\FilamentSpatieRolesPermissions\Resources\PermissionResource;
+use Althinect\FilamentSpatieRolesPermissions\Resources\RoleResource;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -63,6 +67,8 @@ class AdminPanelProvider extends PanelProvider
                             ...PengaturanpenggunaResource::getNavigationItems(),
                             ...PengaturanpengolahResource::getNavigationItems(),
                             ...PengaturanklasifikasiResource::getNavigationItems(),
+                            ...RoleResource::getNavigationItems(),
+                            ...PermissionResource::getNavigationItems(),
                         ])->icon('heroicon-s-cog-8-tooth'),
                     NavigationGroup::make()->items([
                         ...ImportdataResource::getNavigationItems()
@@ -83,6 +89,7 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
