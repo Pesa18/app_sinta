@@ -8,11 +8,13 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use App\Models\Dataarsip;
+use Illuminate\View\View;
 use Filament\Tables\Table;
 use App\Models\Mastermedia;
 use App\Models\Masterlokasi;
 use App\Models\Masterpencipta;
 use App\Models\Masterpengolah;
+use BaconQrCode\Encoder\QrCode;
 use Filament\Resources\Resource;
 use App\Models\Masterklasifikasi;
 use Filament\Tables\Actions\Action;
@@ -28,7 +30,9 @@ use Filament\Tables\Columns\ColumnGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use SimpleSoftwareIO\QrCode\Facades\QrCode as Qr;
 use App\Filament\Resources\DataarsipResource\Pages;
+use App\Filament\Resources\DataarsipResource\Pages\DetailUser;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DataarsipResource\RelationManagers;
 
@@ -107,7 +111,7 @@ class DataarsipResource extends Resource
                         ->autosize(),
                     TextInput::make('jumlah_arsip')->label('Jumlah Arsip')->required(),
                     TextInput::make('no_box')->label('Nomor Box')->required(),
-                    FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])
+                    FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])->required()
 
 
 
@@ -129,7 +133,9 @@ class DataarsipResource extends Resource
                         ->openUrlInNewTab(),
                     IconColumn::make('')->icon('heroicon-s-qr-code')->label('QR')->state(function ($record) {
                         return $record->file_arsip;
-                    }),
+                    })->action(Action::make('qr')->modalContent(
+                        fn (Dataarsip $record): View => view('modal', ['data' => Qr::generate('asdasdasd')])
+                    )),
                 ]),
             ])
             ->filters([
@@ -138,6 +144,7 @@ class DataarsipResource extends Resource
                 return  $query->where('arsip_pegawai_id', NULL);
             })
             ->actions([
+                Action::make('Detail')->label('Detail')->url(fn (Dataarsip $record): string => route('filament.admin.resources.data-arsip.detail-user', $record)),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()->label('hapus'),
 
@@ -161,6 +168,8 @@ class DataarsipResource extends Resource
         return [
             'index' => Pages\ListDataarsips::route('/'),
             'create' => Pages\CreateDataarsip::route('/create'),
+            'view' => Pages\ViewUser::route('/{record}/view'),
+            'detail-user' => Pages\DetailUser::route('/{record}/detail'),
             'edit' => Pages\EditDataarsip::route('/{record}'),
         ];
     }

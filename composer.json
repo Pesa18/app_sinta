@@ -13,6 +13,7 @@
         "filament/filament": "^3.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-permission": "^6.8"
     },
     "require-dev": {
