@@ -36,6 +36,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 use Althinect\FilamentSpatieRolesPermissions\Resources\PermissionResource;
 use Althinect\FilamentSpatieRolesPermissions\Resources\RoleResource;
+use App\Filament\Pages\Dashboard as PagesDashboard;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -51,7 +52,7 @@ class AdminPanelProvider extends PanelProvider
                 return $builder->groups([
                     NavigationGroup::make()
                         ->items(
-                            [NavigationItem::make('Beranda')->icon('heroicon-s-home')]
+                            [...PagesDashboard::getNavigationItems()]
                         ),
                     NavigationGroup::make('Arsip')
                         ->items([

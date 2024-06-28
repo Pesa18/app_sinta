@@ -169,7 +169,7 @@ class DataarsipResource extends Resource
             'index' => Pages\ListDataarsips::route('/'),
             'create' => Pages\CreateDataarsip::route('/create'),
             'view' => Pages\ViewUser::route('/{record}/view'),
-            'detail-user' => Pages\DetailUser::route('/{record}/detail'),
+            'detail-user' => Pages\DetailArsip::route('/{record}/detail'),
             'edit' => Pages\EditDataarsip::route('/{record}'),
         ];
     }
