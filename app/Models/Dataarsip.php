@@ -33,9 +33,24 @@ class Dataarsip extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-
     public function Pencipta(): BelongsTo
     {
         return $this->belongsTo(Masterpencipta::class, 'pencipta_id', 'id');
+    }
+    public function Pengolah(): BelongsTo
+    {
+        return $this->belongsTo(Masterpengolah::class, 'pengolah_id', 'id');
+    }
+    public function Kode(): BelongsTo
+    {
+        return $this->belongsTo(Masterkode::class, 'kode_id', 'id');
+    }
+    public function Lokasi(): BelongsTo
+    {
+        return $this->belongsTo(Masterlokasi::class, 'lokasi_id', 'id');
+    }
+    public function Media(): BelongsTo
+    {
+        return $this->belongsTo(Mastermedia::class, 'media_id', 'id');
     }
 }

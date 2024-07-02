@@ -10,10 +10,15 @@ class ListDataarsips extends ListRecords
 {
     protected static string $resource = DataarsipResource::class;
 
+    public function getBreadcrumb(): ?string
+    {
+        return "List Arsip";
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Buat Arsip'),
         ];
     }
 }

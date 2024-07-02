@@ -18,6 +18,7 @@ use BaconQrCode\Encoder\QrCode;
 use Filament\Resources\Resource;
 use App\Models\Masterklasifikasi;
 use Filament\Tables\Actions\Action;
+use Filament\Support\Enums\MaxWidth;
 use Illuminate\Support\Facades\Date;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
@@ -32,8 +33,8 @@ use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as Qr;
 use App\Filament\Resources\DataarsipResource\Pages;
-use App\Filament\Resources\DataarsipResource\Pages\DetailUser;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\DataarsipResource\Pages\DetailUser;
 use App\Filament\Resources\DataarsipResource\RelationManagers;
 
 class DataarsipResource extends Resource
@@ -43,6 +44,8 @@ class DataarsipResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Arsip';
     protected static ?string $slug = 'data-arsip';
+    protected static ?string $label = 'Arsip';
+    protected static ?string $pluralLabel = "Data Arsip";
     protected static ?int $navigationSort = 3;
 
 
@@ -73,48 +76,65 @@ class DataarsipResource extends Resource
                     'xl' => 2,
                     '2xl' => 2,
                 ])->schema([
-                    TextInput::make('noarsip')->label('Nomor Arsip')->rules([
-                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
-                            if ($value === 'foo') {
-                                $fail('The :attribute is invalid.');
-                            }
-                        },
+                    TextInput::make('noarsip')->label('Nomor Arsip')->rule('required')->markAsRequired(true)->validationMessages([
+                        'required' => 'No Arsip harus diisi.',
                     ]),
-                    TextInput::make('nama_arsip')->label('Nama Arsip')->required(),
-                    DatePicker::make('tanggal_arsip')->label('Tanggal Arsip')->native(false)->required()->placeholder(Carbon::now()->toFormattedDateString()),
+                    TextInput::make('nama_arsip')->label('Nama Arsip')->rule('required')->markAsRequired(true)->validationMessages([
+                        'required' => 'Nama Arsip harus diisi.',
+                    ]),
+                    DatePicker::make('tanggal_arsip')->label('Tanggal Arsip')->native(false)->placeholder(Carbon::now()->toFormattedDateString())->required()->validationMessages([
+                        'required' => 'Tanggal Arsip harus diisi.',
+                    ]),
                     Select::make('pencipta_id')
-                        ->relationship(name: 'Pencipta', titleAttribute: 'nama_pencipta'),
+                        ->relationship(name: 'Pencipta', titleAttribute: 'nama_pencipta')->rule('required')->markAsRequired(true)->validationMessages([
+                            'required' => 'No Arsip harus diisi.',
+                        ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('pengolah_id')
                         ->label('Pengolah')
-                        ->options(Masterpengolah::all()->pluck('nama_pengolah', 'id'))
-                        ->required(),
+                        ->relationship(name: 'Pengolah', titleAttribute: 'nama_pengolah')
+                        ->rule('required')->markAsRequired(true)->validationMessages([
+                            'required' => 'No Arsip harus diisi.',
+                        ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('kode_id')
                         ->label('Klasifikasi')
-                        ->options(Masterklasifikasi::all()->pluck('nama', 'id'))
-                        ->required(),
+                        ->relationship(name: 'Kode', titleAttribute: 'nama')
+                        ->rule('required')->markAsRequired(true)->validationMessages([
+                            'required' => 'No Arsip harus diisi.',
+                        ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('lokasi_id')
                         ->label('Lokasi Arsip')
-                        ->options(Masterlokasi::all()->pluck('nama_lokasi', 'id'))
-                        ->required(),
+                        ->relationship(name: 'Lokasi', titleAttribute: 'nama_lokasi')
+                        ->rule('required')->markAsRequired(true)->validationMessages([
+                            'required' => 'No Arsip harus diisi.',
+                        ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('media_id')
                         ->label('Media')
-                        ->options(Mastermedia::all()->pluck('nama_media', 'id'))
-                        ->required(),
+                        ->relationship(name: 'Media', titleAttribute: 'nama_media')
+                        ->rule('required')->markAsRequired(true)->validationMessages([
+                            'required' => 'No Arsip harus diisi.',
+                        ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('ket')
                         ->label('Keterangan Keaslian')
                         ->options([
                             'Asli' => 'Asli',
                             'Copy' => 'Copy'
-                        ])
-                        ->required(),
+                        ])->placeholder('Pilih Pencipta')->native(false)
+                        ->rule('required')->markAsRequired(true)->validationMessages([
+                            'required' => 'No Arsip harus diisi.',
+                        ]),
                     Textarea::make('uraian')->label('Uraian')
-                        ->autosize(),
-                    TextInput::make('jumlah_arsip')->label('Jumlah Arsip')->required(),
-                    TextInput::make('no_box')->label('Nomor Box')->required(),
-                    FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])->required()
-
-
-
+                        ->autosize()->rule('required')->markAsRequired(true)->validationMessages([
+                            'required' => 'No Arsip harus diisi.',
+                        ]),
+                    TextInput::make('jumlah_arsip')->numeric()->label('Jumlah Arsip')->rule('required')->markAsRequired(true)->validationMessages([
+                        'required' => 'No Arsip harus diisi.',
+                    ]),
+                    TextInput::make('no_box')->label('Nomor Box')->rule('required')->markAsRequired(true)->validationMessages([
+                        'required' => 'No Arsip harus diisi.',
+                    ]),
+                    FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])->required()->validationMessages([
+                        'required' => 'No Arsip harus diisi.',
+                    ]),
                 ]),
             ]);
     }
@@ -125,8 +145,8 @@ class DataarsipResource extends Resource
             ->columns([
                 TextColumn::make('No')
                     ->rowIndex(),
-                TextColumn::make('noarsip')->label('No. Arsip'),
-                TextColumn::make('nama_arsip')->label('Nama Arsip'),
+                TextColumn::make('noarsip')->label('No. Arsip')->searchable(),
+                TextColumn::make('nama_arsip')->label('Nama Arsip')->searchable(),
                 TextColumn::make('user.name')->label('User')->badge()->color('success'),
                 ColumnGroup::make('File', [
                     IconColumn::make('file_arsip')->label('File')->icon('heroicon-s-document')->url(fn (Dataarsip $record): string => url($record->file_arsip))
@@ -134,8 +154,10 @@ class DataarsipResource extends Resource
                     IconColumn::make('')->icon('heroicon-s-qr-code')->label('QR')->state(function ($record) {
                         return $record->file_arsip;
                     })->action(Action::make('qr')->modalContent(
-                        fn (Dataarsip $record): View => view('modal', ['data' => Qr::generate('asdasdasd')])
-                    )),
+                        fn (Dataarsip $record): View => view('modal', ['data' => Qr::size(200)->generate(url($record->file_arsip))])
+                    )->modalSubmitAction(false)->modalWidth(MaxWidth::Large)->modalCancelAction(false)->extraModalFooterActions(fn (Action $action): array => [
+                        $action->url(fn (Dataarsip $record): string => url($record->file_arsip))->openUrlInNewTab()->label('Buka Url'),
+                    ]))
                 ]),
             ])
             ->filters([
@@ -146,13 +168,13 @@ class DataarsipResource extends Resource
             ->actions([
                 Action::make('Detail')->label('Detail')->url(fn (Dataarsip $record): string => route('filament.admin.resources.data-arsip.detail-user', $record)),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->label('hapus'),
+                Tables\Actions\DeleteAction::make()->label('hapus')->modalHeading('asjkdahsd')->modalDescription('Yakin mau menghapus ini?'),
 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()->label('Hapus Pilihan'),
+                ])->label('Aksi'),
             ]);
     }
 
