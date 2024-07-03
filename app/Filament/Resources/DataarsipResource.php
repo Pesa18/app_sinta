@@ -26,6 +26,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Navigation\NavigationItem;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ColumnGroup;
 use Filament\Forms\Components\DatePicker;
@@ -36,6 +37,8 @@ use App\Filament\Resources\DataarsipResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DataarsipResource\Pages\DetailUser;
 use App\Filament\Resources\DataarsipResource\RelationManagers;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
 
 class DataarsipResource extends Resource
 {
@@ -132,7 +135,7 @@ class DataarsipResource extends Resource
                     TextInput::make('no_box')->label('Nomor Box')->rule('required')->markAsRequired(true)->validationMessages([
                         'required' => 'No Arsip harus diisi.',
                     ]),
-                    FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])->required()->validationMessages([
+                    FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])->directory('Arsip')->required()->validationMessages([
                         'required' => 'No Arsip harus diisi.',
                     ]),
                 ]),
@@ -148,6 +151,7 @@ class DataarsipResource extends Resource
                 TextColumn::make('noarsip')->label('No. Arsip')->searchable(),
                 TextColumn::make('nama_arsip')->label('Nama Arsip')->searchable(),
                 TextColumn::make('user.name')->label('User')->badge()->color('success'),
+                TextColumn::make('tanggal_arsip'),
                 ColumnGroup::make('File', [
                     IconColumn::make('file_arsip')->label('File')->icon('heroicon-s-document')->url(fn (Dataarsip $record): string => url($record->file_arsip))
                         ->openUrlInNewTab(),
@@ -168,12 +172,21 @@ class DataarsipResource extends Resource
             ->actions([
                 Action::make('Detail')->label('Detail')->url(fn (Dataarsip $record): string => route('filament.admin.resources.data-arsip.detail-user', $record)),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->label('hapus')->modalHeading('asjkdahsd')->modalDescription('Yakin mau menghapus ini?'),
+                Tables\Actions\DeleteAction::make()->label('hapus')->modalHeading('asjkdahsd')->modalDescription('Yakin mau menghapus ini?')->after(function (Dataarsip $record) {
+                    // delete single
+                    if ($record->file_arsip) {
+                        Storage::disk('public')->delete($record->file_arsip);
+                    }
+                    // // delete multiple
+                    // if ($record->galery) {
+                    //     foreach ($record->galery as $ph) Storage::disk('public')->delete($ph);
+                    // }
+                }),
 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()->label('Hapus Pilihan'),
+                    Tables\Actions\DeleteBulkAction::make()->label('Hapus Pilihan')->after(fn (Collection $records) => $records->each(fn (Dataarsip $record) => Storage::disk('public')->delete($record->file_arsip))),
                 ])->label('Aksi'),
             ]);
     }

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ArsipPegawai extends Model
 {
     use HasFactory;
+    protected $table = 'arsip_pegawai';
 }

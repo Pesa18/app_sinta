@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ArsippegawaiResource extends Resource
 {
-    protected static ?string $model = Arsippegawai::class;
+    protected static ?string $model = ArsipPegawai::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Data Arsip';
