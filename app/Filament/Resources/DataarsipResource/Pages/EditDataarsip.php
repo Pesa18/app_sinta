@@ -27,4 +27,19 @@ class EditDataarsip extends EditRecord
             }),
         ];
     }
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+
+
+        $record = $this->record;
+
+        // Check if a new file is being uploaded
+        if (isset($data['file_arsip']) && $data['file_arsip'] !== $record->file_arsip) {
+            // Delete the old file
+            if ($record->file_arsip) {
+                Storage::disk('public')->delete($record->file_arsip);
+            }
+        }
+        return $data;
+    }
 }

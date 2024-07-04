@@ -90,31 +90,31 @@ class DataarsipResource extends Resource
                     ]),
                     Select::make('pencipta_id')
                         ->relationship(name: 'Pencipta', titleAttribute: 'nama_pencipta')->rule('required')->markAsRequired(true)->validationMessages([
-                            'required' => 'No Arsip harus diisi.',
+                            'required' => 'Pencipta harus diisi.',
                         ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('pengolah_id')
                         ->label('Pengolah')
                         ->relationship(name: 'Pengolah', titleAttribute: 'nama_pengolah')
                         ->rule('required')->markAsRequired(true)->validationMessages([
-                            'required' => 'No Arsip harus diisi.',
+                            'required' => 'Pengolah harus diisi.',
                         ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('kode_id')
                         ->label('Klasifikasi')
                         ->relationship(name: 'Kode', titleAttribute: 'nama')
                         ->rule('required')->markAsRequired(true)->validationMessages([
-                            'required' => 'No Arsip harus diisi.',
+                            'required' => 'Klasifikasi harus diisi.',
                         ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('lokasi_id')
                         ->label('Lokasi Arsip')
                         ->relationship(name: 'Lokasi', titleAttribute: 'nama_lokasi')
                         ->rule('required')->markAsRequired(true)->validationMessages([
-                            'required' => 'No Arsip harus diisi.',
+                            'required' => 'Lokasi harus diisi.',
                         ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('media_id')
                         ->label('Media')
                         ->relationship(name: 'Media', titleAttribute: 'nama_media')
                         ->rule('required')->markAsRequired(true)->validationMessages([
-                            'required' => 'No Arsip harus diisi.',
+                            'required' => 'Media harus diisi.',
                         ])->placeholder('Pilih Pencipta')->native(false),
                     Select::make('ket')
                         ->label('Keterangan Keaslian')
@@ -123,20 +123,20 @@ class DataarsipResource extends Resource
                             'Copy' => 'Copy'
                         ])->placeholder('Pilih Pencipta')->native(false)
                         ->rule('required')->markAsRequired(true)->validationMessages([
-                            'required' => 'No Arsip harus diisi.',
+                            'required' => 'Keterangan harus diisi.',
                         ]),
                     Textarea::make('uraian')->label('Uraian')
                         ->autosize()->rule('required')->markAsRequired(true)->validationMessages([
-                            'required' => 'No Arsip harus diisi.',
+                            'required' => 'Uraian harus diisi.',
                         ]),
                     TextInput::make('jumlah_arsip')->numeric()->label('Jumlah Arsip')->rule('required')->markAsRequired(true)->validationMessages([
-                        'required' => 'No Arsip harus diisi.',
+                        'required' => 'Jumlah harus diisi.',
                     ]),
                     TextInput::make('no_box')->label('Nomor Box')->rule('required')->markAsRequired(true)->validationMessages([
-                        'required' => 'No Arsip harus diisi.',
+                        'required' => 'No Box harus diisi.',
                     ]),
                     FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])->directory('Arsip')->required()->validationMessages([
-                        'required' => 'No Arsip harus diisi.',
+                        'required' => 'File harus diisi.',
                     ]),
                 ]),
             ]);

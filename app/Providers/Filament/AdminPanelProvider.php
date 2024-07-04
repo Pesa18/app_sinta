@@ -78,7 +78,7 @@ class AdminPanelProvider extends PanelProvider
             })
 
             ->colors([
-                'primary' => Color::Purple,
+                'primary' => Color::Emerald,
             ])
             ->brandLogo(fn () => view('vendor.filament.components.brand'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
