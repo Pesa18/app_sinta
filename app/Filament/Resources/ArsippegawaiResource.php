@@ -20,6 +20,7 @@ class ArsippegawaiResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Data Arsip';
     protected static ?string $navigationLabel = 'Arsip Pegawai';
+    protected static ?string $slug = 'data-pegawai';
 
 
 

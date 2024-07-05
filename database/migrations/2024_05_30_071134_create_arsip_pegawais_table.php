@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('nik');
             $table->integer('status_pegawai');
             $table->string('pangkat_gol');
+            $table->string('foto_profile');
             $table->string('jabatan');
             $table->timestamps();
         });
