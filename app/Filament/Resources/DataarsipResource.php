@@ -6,6 +6,7 @@ use Closure;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
 use App\Models\Dataarsip;
 use Illuminate\View\View;
@@ -24,6 +25,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Navigation\NavigationItem;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Storage;
@@ -32,13 +34,13 @@ use Filament\Tables\Columns\ColumnGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as Qr;
 use App\Filament\Resources\DataarsipResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DataarsipResource\Pages\DetailUser;
 use App\Filament\Resources\DataarsipResource\RelationManagers;
-use Filament\Tables\Actions\BulkAction;
-use Illuminate\Database\Eloquent\Collection;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class DataarsipResource extends Resource
 {
@@ -135,9 +137,13 @@ class DataarsipResource extends Resource
                     TextInput::make('no_box')->label('Nomor Box')->rule('required')->markAsRequired(true)->validationMessages([
                         'required' => 'No Box harus diisi.',
                     ]),
-                    FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])->directory('Arsip')->required()->validationMessages([
+                    FileUpload::make('file_arsip')->acceptedFileTypes(['application/pdf'])->directory(function (Get $get) {
+                        return $get('no_box') . "_" . Carbon::parse($get('tanggal_arsip'))->format('dmY');
+                    })->required()->validationMessages([
                         'required' => 'File harus diisi.',
-                    ]),
+                    ])->getUploadedFileNameForStorageUsing(
+                        fn (Get $get, TemporaryUploadedFile $file): string => (string) str(str_replace(' ', '_', $get('nama_arsip')) . "." . $file->getClientOriginalExtension()),
+                    ),
                 ]),
             ]);
     }
