@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_lengkap');
             $table->string('tempat_lahir');
-            $table->string('tgl_lahir');
+            $table->date('tgl_lahir');
             $table->string('jenis_kelamin');
             $table->string('agama');
             $table->string('alamat');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('nik');
             $table->integer('status_pegawai');
             $table->string('pangkat_gol');
-            $table->string('foto_profile');
+            $table->string('foto_profile')->nullable();
             $table->string('jabatan');
             $table->timestamps();
         });

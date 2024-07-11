@@ -16,8 +16,10 @@
                         </div>
                         <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt class="text-sm font-medium leading-6 text-gray-900">User Pencipta</dt>
-                            <dd class="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                {{ $record->user->name }}</dd>
+                            <x-filament::badge size="xs" icon="heroicon-m-user">
+                                {{ $record->user->name }}
+                            </x-filament::badge>
+
                         </div>
                         <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt class="text-sm font-medium leading-6 text-gray-900">Tanggal</dt>
@@ -65,11 +67,13 @@
                         </div>
                         <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt class="text-sm font-medium leading-6 text-gray-900">Jumlah Arsip</dt>
-                            <dd class="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">$120,000</dd>
+                            <dd class="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                                {{ $record->jumlah_arsip }}</dd>
                         </div>
                         <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                             <dt class="text-sm font-medium leading-6 text-gray-900">Nomor Box</dt>
-                            <dd class="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">$120,000</dd>
+                            <dd class="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
+                                {{ $record->no_box }}</dd>
                         </div>
 
                         <div class="px-4 py-4  sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -93,8 +97,12 @@
                                             </div>
                                         </div>
                                         <div class="ml-4 flex-shrink-0">
-                                            <a href={{ url($record->file_arsip) }} download={{ $record->file_name }}
-                                                class="font-medium text-indigo-600 hover:text-indigo-500">Download</a>
+
+                                            <x-filament::button href="{{ url($record->file_arsip) }}" tag="a"
+                                                download="{{ $record->file_name }}">
+                                                Download
+                                            </x-filament::button>
+
                                         </div>
                                     </li>
                                 </ul>
