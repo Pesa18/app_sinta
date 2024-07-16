@@ -2,7 +2,7 @@
     <div>
         @livewire('App\Filament\Widgets\StatistikData')
 
-        @can('Admin-Roles')
+        @can('akses-dashboard-admin')
             <div class="mt-6 flex flex-row gap-4">
                 @livewire('App\Filament\Widgets\DataArsipChart')
 

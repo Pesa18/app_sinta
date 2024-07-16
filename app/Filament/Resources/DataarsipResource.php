@@ -173,7 +173,10 @@ class DataarsipResource extends Resource
             ->filters([
                 //
             ])->modifyQueryUsing(function (Builder $query) {
-                return  $query->where('arsip_pegawai_id', NULL);
+                if (auth()->user()->can('akses-semua-arsip')) {
+                    return $query->where('arsip_pegawai_id', NULL);
+                }
+                return $query->where('user_id', auth()->id())->where('arsip_pegawai_id', NULL);
             })
             ->actions([
                 Action::make('Detail')->label('Detail')->url(fn (Dataarsip $record): string => route('filament.admin.resources.data-arsip.detail-user', $record)),

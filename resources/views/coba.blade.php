@@ -1,3 +1,3 @@
 <x-filament-panels::page>
-    <div>Hallo {{ $this->table }}</div>
+    <div>Hallo </div>
 </x-filament-panels::page>

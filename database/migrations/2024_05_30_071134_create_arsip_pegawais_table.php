@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('arsip_pegawai', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->autoIncrement();
             $table->string('nama_lengkap');
             $table->string('tempat_lahir');
             $table->date('tgl_lahir');
@@ -22,11 +23,12 @@ return new class extends Migration
             $table->string('no_hp')->nullable();
             $table->string('email')->nullable();
             $table->string('nip');
-            $table->string('nik');
+            $table->string('nik')->nullable();
             $table->integer('status_pegawai');
-            $table->string('pangkat_gol');
+            $table->string('satker')->nullable();
+            $table->string('pangkat_gol')->nullable();
             $table->string('foto_profile')->nullable();
-            $table->string('jabatan');
+            $table->string('jabatan')->nullable();
             $table->timestamps();
         });
     }
