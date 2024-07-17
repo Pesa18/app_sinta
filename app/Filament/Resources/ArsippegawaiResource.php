@@ -40,6 +40,7 @@ use App\Filament\Resources\ArsippegawaiResource\Pages\EditArsippegawai;
 use App\Filament\Resources\ArsippegawaiResource\Pages\ListArsippegawais;
 use App\Filament\Resources\ArsippegawaiResource\Pages\ArsiprelatedRecord;
 use App\Filament\Resources\ArsippegawaiResource\RelationManagers\PegawaiRelationManager;
+use App\Models\Dataarsip;
 
 class ArsippegawaiResource extends Resource
 {
@@ -191,6 +192,10 @@ class ArsippegawaiResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()->after(function (Arsippegawai $record) {
+
+                    return  Dataarsip::where('arsip_pegawai_id', $record->uuid)->delete();
+                }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

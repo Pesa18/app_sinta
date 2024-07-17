@@ -181,7 +181,7 @@ class DataarsipResource extends Resource
             ->actions([
                 Action::make('Detail')->label('Detail')->url(fn (Dataarsip $record): string => route('filament.admin.resources.data-arsip.detail-user', $record)),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->label('hapus')->modalHeading('asjkdahsd')->modalDescription('Yakin mau menghapus ini?')->after(function (Dataarsip $record) {
+                Tables\Actions\DeleteAction::make()->label('hapus')->modalHeading('Arsip Akan Di Hapus.')->modalDescription('Yakin mau menghapus ini?')->after(function (Dataarsip $record) {
                     // delete single
                     if ($record->file_arsip) {
                         Storage::disk('public')->delete($record->file_arsip);
@@ -192,6 +192,9 @@ class DataarsipResource extends Resource
                     // }
                 }),
 
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make()->label('Buat Arsip'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

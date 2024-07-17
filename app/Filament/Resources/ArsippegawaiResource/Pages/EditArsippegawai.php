@@ -11,11 +11,6 @@ class EditArsippegawai extends EditRecord
 {
     protected static string $resource = ArsippegawaiResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+
     protected static ?string $navigationLabel = 'Edit Pegawai';
 }
