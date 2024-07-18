@@ -28,12 +28,14 @@ use Filament\Navigation\NavigationItem;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ColumnGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Collection;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as Qr;
 use App\Filament\Resources\DataarsipResource\Pages;
@@ -49,7 +51,6 @@ class DataarsipResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Arsip';
     protected static ?string $slug = 'data-arsip';
-    protected static ?string $label = 'Arsip';
     protected static ?string $pluralLabel = "Data Arsip";
     protected static ?int $navigationSort = 3;
 
@@ -71,6 +72,23 @@ class DataarsipResource extends Resource
         ];
     }
 
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['noarsip', 'nama_arsip'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
+    {
+        return $record->noarsip;
+    }
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        if (auth()->user()->can('akses-global-search')) {
+            return parent::getGlobalSearchEloquentQuery()->where('arsip_pegawai_id', null);
+        } else {
+            return parent::getGlobalSearchEloquentQuery()->where('arsip_pegawai_id', null)->where('user_id', auth()->id());
+        }
+    }
 
     public static function form(Form $form): Form
     {

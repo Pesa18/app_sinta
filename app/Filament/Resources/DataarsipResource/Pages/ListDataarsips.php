@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\DataarsipResource;
+use Filament\Notifications\Notification;
 
 class ListDataarsips extends ListRecords
 {
@@ -24,7 +25,7 @@ class ListDataarsips extends ListRecords
 
     public function getHeader(): ?View
     {
-        return view('coba');
+        return view('filament.headerDataarsip');
     }
 
 
@@ -43,13 +44,16 @@ class ListDataarsips extends ListRecords
 
         try {
             Excel::import(new ArsipImport, $this->file);
+            Notification::make()
+                ->title('Data Berhasil Diimport')
+                ->success()
+                ->send();
             $this->reset(['file']);
-
-            // Flash message untuk umpan balik sukses
-            session()->flash('success', 'File berhasil diunggah dan diimpor.');
         } catch (\Exception $e) {
-            // Flash message untuk umpan balik error
-            session()->flash('error', 'Terjadi kesalahan saat mengimpor file.');
+            Notification::make()
+                ->title("Error: " . $e->getMessage())
+                ->danger()
+                ->send();
         }
     }
 }

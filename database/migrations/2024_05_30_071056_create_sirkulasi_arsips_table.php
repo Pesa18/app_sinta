@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('sirkulasi_arsip', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('arsip_id')->constrained(
-                table: "data-arsip",
-                indexName: "data_arsip_id"
-            );
+            $table->foreignId('arsip_id');
             $table->foreignId('user_id')->constrained(
                 table: "users",
                 indexName: "user_peminjam_id"
             );
             $table->string('keperluan');
             $table->date('tgl_pinjam');
-            $table->date('tgl_pengembalian');
+            $table->date('tgl_pengembalian')->nullable();
             $table->date('tgl_expire');
             $table->timestamps();
         });

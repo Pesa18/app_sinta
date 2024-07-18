@@ -5,8 +5,9 @@ namespace App\Imports;
 use App\Models\Dataarsip;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class ArsipImport implements ToModel, WithHeadingRow
+class ArsipImport implements ToModel, WithHeadingRow, WithValidation
 {
     /**
      * @param array $row
@@ -31,5 +32,24 @@ class ArsipImport implements ToModel, WithHeadingRow
             "no_box" => $row["no_box"],
             "file_arsip" => "default/arsip_contoh.pdf",
         ]);
+    }
+
+    public function rules(): array
+    {
+        return [
+
+            "noarsip" => "required",
+            "nama_arsip" => "required",
+            "pencipta_id" => "required",
+            "pengolah_id" => "required",
+            "kode_id" => "required",
+            "lokasi_id" => "required",
+            "media_id" => "required",
+            "tanggal_arsip" => "required",
+            "ket" => "required",
+            "uraian" => "required",
+            "jumlah_arsip" => "required",
+            "no_box" => "required",
+        ];
     }
 }

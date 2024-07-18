@@ -181,6 +181,9 @@ class ArsippegawaiResource extends Resource
                         "Aktif" => 'heroicon-o-check-circle',
                         "Tidak Aktif" => 'heroicon-o-x-circle',
                     }),
+                TextColumn::make('')->label('Jumlah Arsip')->state(function ($record) {
+                    return  ArsipPegawai::withCount('pegawai')->find($record->uuid)->pegawai_count;
+                })
             ])
             ->filters([
                 SelectFilter::make('status_pegawai')
@@ -196,6 +199,8 @@ class ArsippegawaiResource extends Resource
 
                     return  Dataarsip::where('arsip_pegawai_id', $record->uuid)->delete();
                 }),
+            ])->headerActions([
+                Tables\Actions\CreateAction::make()->label('Buat Pegawai'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

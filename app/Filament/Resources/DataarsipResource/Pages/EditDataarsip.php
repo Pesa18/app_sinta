@@ -6,6 +6,7 @@ use Filament\Actions;
 use App\Models\Dataarsip;
 use Illuminate\Support\Facades\Storage;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 use App\Filament\Resources\DataarsipResource;
 
 class EditDataarsip extends EditRecord
@@ -41,5 +42,11 @@ class EditDataarsip extends EditRecord
             }
         }
         return $data;
+    }
+
+
+    public static function getGlobalSearchResultTitle(Dataarsip $record): string | Htmlable
+    {
+        return $record->noarsip;
     }
 }
