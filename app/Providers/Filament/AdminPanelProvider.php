@@ -72,9 +72,7 @@ class AdminPanelProvider extends PanelProvider
                             ...RoleResource::getNavigationItems(),
                             ...PermissionResource::getNavigationItems(),
                         ])->icon('heroicon-s-cog-8-tooth'),
-                    NavigationGroup::make()->items([
-                        ...ImportdataResource::getNavigationItems()
-                    ])
+
                 ]);
             })
 
