@@ -11,21 +11,14 @@ use Filament\Forms\Form;
 use App\Models\Dataarsip;
 use Illuminate\View\View;
 use Filament\Tables\Table;
-use App\Models\Mastermedia;
-use App\Models\Masterlokasi;
-use App\Models\Masterpencipta;
-use App\Models\Masterpengolah;
-use BaconQrCode\Encoder\QrCode;
 use Filament\Resources\Resource;
-use App\Models\Masterklasifikasi;
 use Filament\Tables\Actions\Action;
 use Filament\Support\Enums\MaxWidth;
-use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Gate;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Navigation\NavigationItem;
-use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
@@ -39,9 +32,6 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Collection;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as Qr;
 use App\Filament\Resources\DataarsipResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\DataarsipResource\Pages\DetailUser;
-use App\Filament\Resources\DataarsipResource\RelationManagers;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class DataarsipResource extends Resource
@@ -68,7 +58,7 @@ class DataarsipResource extends Resource
                 ->badgeTooltip(static::getNavigationBadgeTooltip())
                 ->sort(static::getNavigationSort())
                 ->url(static::getNavigationUrl())
-                ->hidden(fn (): bool => auth()->user()->can('data-arsip')),
+                ->visible(fn (): bool => Gate::allows('akses-arsip')),
         ];
     }
 
@@ -83,7 +73,7 @@ class DataarsipResource extends Resource
     }
     public static function getGlobalSearchEloquentQuery(): Builder
     {
-        if (auth()->user()->can('akses-global-search')) {
+        if (Gate::allows('akses-global-search')) {
             return parent::getGlobalSearchEloquentQuery()->where('arsip_pegawai_id', null);
         } else {
             return parent::getGlobalSearchEloquentQuery()->where('arsip_pegawai_id', null)->where('user_id', auth()->id());
@@ -191,7 +181,7 @@ class DataarsipResource extends Resource
             ->filters([
                 //
             ])->modifyQueryUsing(function (Builder $query) {
-                if (auth()->user()->can('akses-semua-arsip')) {
+                if (Gate::allows('akses-semua-arsip')) {
                     return $query->where('arsip_pegawai_id', NULL);
                 }
                 return $query->where('user_id', auth()->id())->where('arsip_pegawai_id', NULL);

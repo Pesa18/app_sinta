@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Dataarsip;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class Dataarsippolicy
 {
@@ -13,11 +13,7 @@ class Dataarsippolicy
      */
     public function viewAny(User $user): bool
     {
-        if (auth()->user()->can('data-arsip')) {
-            return false;
-        } else {
-            return true;
-        }
+        return Gate::allows('akses-arsip');
     }
 
     /**

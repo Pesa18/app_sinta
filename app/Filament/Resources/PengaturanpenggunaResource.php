@@ -32,8 +32,8 @@ class PengaturanpenggunaResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
-                TextInput::make('email'),
+                TextInput::make('name')->required(),
+                TextInput::make('email')->email()->required(),
                 TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
