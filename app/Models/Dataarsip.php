@@ -56,4 +56,9 @@ class Dataarsip extends Model
     {
         return $this->belongsTo(Mastermedia::class, 'media_id', 'id');
     }
+
+    public function jumlahArsip()
+    {
+        return $this->where('arsip_pegawai_id', null);
+    }
 }

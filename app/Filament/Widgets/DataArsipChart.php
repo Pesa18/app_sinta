@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Dataarsip;
 use Filament\Widgets\ChartWidget;
 
 class DataArsipChart extends ChartWidget
@@ -10,14 +11,25 @@ class DataArsipChart extends ChartWidget
 
     protected function getData(): array
     {
+
+        $query = Dataarsip::with('user')->get();
+        $userData = $query->groupBy('user_id')->map(function ($group) {
+            return [
+                'name' => $group->first()->user->name, // Nama user
+                'count' => $group->count() // Jumlah arsip
+            ];
+        })->values()->all();
+
+
+
         return [
             'datasets' => [
                 [
                     'label' => 'Blog posts created',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'data' => $userData
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' => $userData,
         ];
     }
 
