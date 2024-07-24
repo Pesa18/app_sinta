@@ -11,6 +11,8 @@ class Masterlokasi extends Model
     use HasFactory;
 
     protected $table = 'master_lokasi';
+    protected $guarded = [];
+    public $timestamps = false;
 
     public function arsip(): HasMany
     {

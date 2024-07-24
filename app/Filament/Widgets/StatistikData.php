@@ -10,6 +10,7 @@ use Flowframe\Trend\TrendValue;
 use Coduo\PHPHumanizer\NumberHumanizer;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
+use App\Models\User;
 
 
 class StatistikData extends BaseWidget
@@ -38,8 +39,8 @@ class StatistikData extends BaseWidget
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->chart($data->map(fn (TrendValue $value) => $value->aggregate)->toArray())
                 ->color('success'),
-            Stat::make('Bounce rate', '21%'),
-            Stat::make('Average time on page', '3:12'),
+            Stat::make('Jumlah Arsip Pegawai', NumberHumanizer::metricSuffix(Dataarsip::whereNotNull('arsip_pegawai_id')->count())),
+            Stat::make('Jumlah User', User::count()),
         ];
     }
 }
