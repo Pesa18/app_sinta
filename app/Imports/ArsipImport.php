@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Dataarsip;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -25,7 +26,7 @@ class ArsipImport implements ToModel, WithHeadingRow, WithValidation
             "lokasi_id" => $row["lokasi_id"],
             "media_id" => $row["media_id"],
             "user_id" => auth()->id(),
-            "tanggal_arsip" => $row["tanggal_arsip"],
+            "tanggal_arsip" => Carbon::createFromFormat('d/m/Y', $row["tanggal_arsip"])->format("Y-m-d"),
             "ket" => $row["ket"],
             "uraian" => $row["uraian"],
             "jumlah_arsip" => $row["jumlah_arsip"],

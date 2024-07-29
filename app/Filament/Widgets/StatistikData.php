@@ -21,8 +21,8 @@ class StatistikData extends BaseWidget
         $data = Trend::model(Dataarsip::class)
             ->dateColumn('tanggal_arsip')
             ->between(
-                start: Carbon::createFromFormat('Y-m-d ', '2024-01-01 '),
-                end: Carbon::createFromFormat('Y-m-d ', '2024-12-31 '),
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
             )
             ->perMonth()
             ->count();

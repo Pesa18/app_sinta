@@ -15,58 +15,7 @@ class DataArsipChart extends ChartWidget
 
     protected function getData(): array
     {
-
-        // $query = Dataarsip::with('user')->get();
-        // $userData = $query->groupBy('user_id')->map(function ($group) {
-        //     return [
-        //         'name' => $group->first()->user->name, // Nama user
-        //         'count' => $group->count() // Jumlah arsip
-        //     ];
-        // })->values();
-
-        // dd(array_values($userData->pluck('name')->all()));
         Carbon::setLocale('id');
-        // $currentYear = Carbon::now()->year;
-        // $userData = Dataarsip::whereYear('tanggal_arsip', $currentYear)
-        //     ->get()
-        //     ->groupBy(function ($date) {
-        //         return Carbon::parse($date->tanggal_arsip)->translatedFormat('F'); // Format bulan dan tahun
-        //     })
-        //     ->map(function ($group) {
-        //         return [
-        //             'month' => Carbon::parse($group->first()->tanggal_arsip)->translatedFormat('F'), // Nama bulan dan tahun
-        //             'count' => $group->count() // Jumlah arsip pada bulan tersebut
-        //         ];
-        //     });
-
-
-
-        // $allMonths = [
-        //     'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-        //     'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-        // ];
-
-        // // Inisialisasi array untuk menyimpan hasil
-        // $labels = [];
-        // $data = [];
-
-        // // Iterasi setiap bulan
-        // foreach ($allMonths as $index => $month) {
-        //     $monthKey = Carbon::createFromDate($currentYear, $index + 1, 1)->translatedFormat('F');
-        //     // Jika bulan ada dalam data arsip, ambil jumlahnya, jika tidak, set ke 0
-        //     if ($userData->has($monthKey)) {
-        //         $labels[] = $userData[$monthKey]['month'];
-        //         $data[] = $userData[$monthKey]['count'];
-        //     } else {
-        //         $labels[] = $month;
-        //         $data[] = 0;
-        //     }
-        // }
-
-        // dd($userData);
-
-
-
         $data = Trend::query(Dataarsip::where('arsip_pegawai_id', null))
             ->dateColumn('tanggal_arsip')
             ->between(
@@ -75,9 +24,6 @@ class DataArsipChart extends ChartWidget
             )
             ->perMonth()
             ->count();
-
-
-        // dd(now()->startOfYear());
 
         return [
             'datasets' => [

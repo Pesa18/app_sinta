@@ -5,7 +5,7 @@ namespace App\Filament\Pages;
 use App\Filament\Widgets\DataArsipChart;
 use App\Filament\Widgets\StatistikData;
 use Filament\Pages\Page;
-use Filament\Widgets\AccountWidget;
+use Filament\Widgets;
 
 class Dashboard extends Page
 {
@@ -17,6 +17,6 @@ class Dashboard extends Page
 
     public function data()
     {
-        return DataArsipChart::class;
+        return Widgets\AccountWidget::class;
     }
 }
