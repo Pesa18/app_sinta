@@ -17,7 +17,7 @@
 
         </x-filament::button>
     </form>
-    <x-filament::button type="button" download="data-import.csv" href="/importExcel.csv" tag="a"
+    <x-filament::button type="button" download="data-import.csv" href="/ImportPegawai.csv" tag="a"
         icon="heroicon-m-arrow-down-on-square">
         Download Template
     </x-filament::button>

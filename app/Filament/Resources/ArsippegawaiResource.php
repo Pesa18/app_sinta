@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
+use App\Models\Dataarsip;
 use Filament\Tables\Table;
 use App\Models\Arsippegawai;
 use Filament\Infolists\Infolist;
@@ -14,10 +15,12 @@ use Filament\Resources\Pages\Page;
 use Filament\Forms\Components\Tabs;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Group;
+use Illuminate\Support\Facades\Gate;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
+use Filament\Navigation\NavigationItem;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
@@ -40,7 +43,6 @@ use App\Filament\Resources\ArsippegawaiResource\Pages\EditArsippegawai;
 use App\Filament\Resources\ArsippegawaiResource\Pages\ListArsippegawais;
 use App\Filament\Resources\ArsippegawaiResource\Pages\ArsiprelatedRecord;
 use App\Filament\Resources\ArsippegawaiResource\RelationManagers\PegawaiRelationManager;
-use App\Models\Dataarsip;
 
 class ArsippegawaiResource extends Resource
 {
@@ -54,7 +56,22 @@ class ArsippegawaiResource extends Resource
 
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
-
+    // public static function getNavigationItems(): array
+    // {
+    //     return [
+    //         NavigationItem::make(static::getNavigationLabel())
+    //             ->group(static::getNavigationGroup())
+    //             ->parentItem(static::getNavigationParentItem())
+    //             ->icon(static::getNavigationIcon())
+    //             ->activeIcon(static::getActiveNavigationIcon())
+    //             ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.*'))
+    //             ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
+    //             ->badgeTooltip(static::getNavigationBadgeTooltip())
+    //             ->sort(static::getNavigationSort())
+    //             ->url(static::getNavigationUrl())
+    //             ->visible(fn (): bool => Gate::allows('akses-arsip-pegawai')),
+    //     ];
+    // }
     public static function form(Form $form): Form
     {
         return $form

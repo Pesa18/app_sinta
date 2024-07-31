@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Gate;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
+use Filament\Navigation\NavigationItem;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Infolists\Components\Group;
@@ -37,9 +38,26 @@ class SirkulasiarsipResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Data Arsip';
+    protected static ?string $slug = 'sirkulasiarsip';
     protected static ?string $navigationLabel = 'Sirkulasi Arsip';
+    protected static ?string $pluralLabel = "Sirkulasi Arsip";
 
-
+    public static function getNavigationItems(): array
+    {
+        return [
+            NavigationItem::make(static::getNavigationLabel())
+                ->group(static::getNavigationGroup())
+                ->parentItem(static::getNavigationParentItem())
+                ->icon(static::getNavigationIcon())
+                ->activeIcon(static::getActiveNavigationIcon())
+                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.*'))
+                ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
+                ->badgeTooltip(static::getNavigationBadgeTooltip())
+                ->sort(static::getNavigationSort())
+                ->url(static::getNavigationUrl())
+                ->visible(fn (): bool => Gate::allows('akses-sirkulasi-arsip')),
+        ];
+    }
     public static function form(Form $form): Form
     {
         return $form

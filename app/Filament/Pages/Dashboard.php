@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\DataarsipResource;
 use App\Filament\Widgets\DataArsipChart;
 use App\Filament\Widgets\StatistikData;
 use Filament\Pages\Page;
@@ -17,6 +18,6 @@ class Dashboard extends Page
 
     public function data()
     {
-        return Widgets\AccountWidget::class;
+        return DataarsipResource::getUrl();
     }
 }
