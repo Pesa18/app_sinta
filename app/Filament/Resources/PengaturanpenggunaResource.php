@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PengaturanpenggunaResource\Pages;
 use App\Filament\Resources\PengaturanpenggunaResource\RelationManagers;
+use App\Models\Masterpengguna;
 use App\Models\Pengaturanpengguna;
 use App\Models\User;
 use Filament\Forms;
@@ -22,8 +23,9 @@ use Illuminate\Support\Facades\Hash;
 
 class PengaturanpenggunaResource extends Resource
 {
-    protected static ?string $model = User::class;
-
+    protected static ?string $model = Masterpengguna::class;
+    protected static ?string $slug = 'pengguna';
+    protected static ?string $pluralLabel = "Pengaturan Pengguna";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Pengguna';
 

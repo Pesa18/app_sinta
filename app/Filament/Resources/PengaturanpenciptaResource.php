@@ -19,7 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PengaturanpenciptaResource extends Resource
 {
     protected static ?string $model = Masterpencipta::class;
-
+    protected static ?string $slug = 'pencipta';
+    protected static ?string $pluralLabel = "pengaturan pencipta";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Pencipta';
 

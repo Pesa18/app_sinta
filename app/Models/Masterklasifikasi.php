@@ -8,5 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Masterklasifikasi extends Model
 {
     use HasFactory;
-    protected $table = 'master_kode';
+    protected $table = 'master-kode';
+    protected $guarded = ["id"];
+    public $timestamps = false;
 }

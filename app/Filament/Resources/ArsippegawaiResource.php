@@ -22,12 +22,14 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Navigation\NavigationItem;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Support\Htmlable;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -43,12 +45,14 @@ use App\Filament\Resources\ArsippegawaiResource\Pages\EditArsippegawai;
 use App\Filament\Resources\ArsippegawaiResource\Pages\ListArsippegawais;
 use App\Filament\Resources\ArsippegawaiResource\Pages\ArsiprelatedRecord;
 use App\Filament\Resources\ArsippegawaiResource\RelationManagers\PegawaiRelationManager;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\HtmlString;
 
 class ArsippegawaiResource extends Resource
 {
     protected static ?string $model = ArsipPegawai::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?string $navigationLabel = 'Arsip Pegawai';
     protected static ?string $slug = 'arsip-pegawai';
     protected static ?string $label = 'Pegawai';
@@ -56,22 +60,41 @@ class ArsippegawaiResource extends Resource
 
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
-    // public static function getNavigationItems(): array
-    // {
-    //     return [
-    //         NavigationItem::make(static::getNavigationLabel())
-    //             ->group(static::getNavigationGroup())
-    //             ->parentItem(static::getNavigationParentItem())
-    //             ->icon(static::getNavigationIcon())
-    //             ->activeIcon(static::getActiveNavigationIcon())
-    //             ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.*'))
-    //             ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
-    //             ->badgeTooltip(static::getNavigationBadgeTooltip())
-    //             ->sort(static::getNavigationSort())
-    //             ->url(static::getNavigationUrl())
-    //             ->visible(fn (): bool => Gate::allows('akses-arsip-pegawai')),
-    //     ];
-    // }
+    public static function getNavigationItems(): array
+    {
+        return [
+            NavigationItem::make(static::getNavigationLabel())
+                ->group(static::getNavigationGroup())
+                ->parentItem(static::getNavigationParentItem())
+                ->icon(static::getNavigationIcon())
+                ->activeIcon(static::getActiveNavigationIcon())
+                ->isActiveWhen(fn () => request()->routeIs(static::getRouteBaseName() . '.*'))
+                ->badge(static::getNavigationBadge(), color: static::getNavigationBadgeColor())
+                ->badgeTooltip(static::getNavigationBadgeTooltip())
+                ->sort(static::getNavigationSort())
+                ->url(static::getNavigationUrl())
+                ->visible(fn (): bool => Gate::allows('akses-arsip-pegawai')),
+        ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nama_lengkap', 'nip'];
+    }
+
+    public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
+    {
+        $view = View::make('filament.searchArsippegawai', ["record" => $record])->render();
+        return new HtmlString($view);
+    }
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        if (Gate::allows('akses-arsip-pegawai')) {
+            return parent::getGlobalSearchEloquentQuery();
+        } else {
+            return false;
+        }
+    }
     public static function form(Form $form): Form
     {
         return $form

@@ -25,13 +25,13 @@ class LokasiArsipMapping extends BaseWidget
 
 
         $arrayData = $lokasiData->take(5)->map(function ($data) {
-            return Stat::make('Lokasi', NumberHumanizer::metricSuffix($data['count']))->description($data['nama_lokasi'])->color('success')->descriptionIcon('heroicon-o-archive-box');
+            return Stat::make('Lokasi', NumberHumanizer::metricSuffix($data['count']))->description($data['nama_lokasi'])->color('primary')->descriptionIcon('heroicon-o-archive-box');
         });
 
 
         $data =  $arrayData->toArray();
 
-        $data[] = Stat::make('', "Semua Arsip")->extraAttributes(['style' => 'background-color: #34d399 !important;'])->description('Lihat')->descriptionIcon('heroicon-o-arrow-right')->color("white")->url(DataarsipResource::getUrl());
+        $data[] = Stat::make('', "Semua Arsip")->extraAttributes(['style' => 'background-color: #02558e!important;'])->description('Lihat')->descriptionIcon('heroicon-o-arrow-right')->color("white")->url(DataarsipResource::getUrl());
 
         return $data;
     }

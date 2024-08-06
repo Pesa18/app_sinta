@@ -8,5 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Masterkode extends Model
 {
     use HasFactory;
-    protected $table = "master_kode";
+    protected $table = "master-kode";
+    protected $primaryKey = 'kode';
+    protected $guarded = [];
 }

@@ -27,10 +27,14 @@ class DetailArsip extends Page
 
     private function showFileSize($file)
     {
-        $filePath = $file; // Sesuaikan path dengan file yang ingin Anda ukur
-        $fileSize = Storage::disk('public')->size($filePath);
+        try {
+            $filePath = $file; // Sesuaikan path dengan file yang ingin Anda ukur
+            $fileSize = Storage::disk('public')->size($filePath);
 
-        return  $this->humanFileSize($fileSize);
+            return  $this->humanFileSize($fileSize);
+        } catch (\Throwable $th) {
+            return 0;
+        }
     }
 
     private function humanFileSize($size, $precision = 2)

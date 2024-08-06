@@ -38,6 +38,7 @@ use Althinect\FilamentSpatieRolesPermissions\Resources\PermissionResource;
 use Althinect\FilamentSpatieRolesPermissions\Resources\RoleResource;
 use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Dashboard as PagesDashboard;
+use Illuminate\Support\Facades\Gate;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -62,7 +63,7 @@ class AdminPanelProvider extends PanelProvider
                             ...SirkulasiarsipResource::getNavigationItems()
                         ])->icon('heroicon-s-archive-box'),
                     NavigationGroup::make('Pengaturan')
-                        ->items([
+                        ->items(Gate::allows('akses-pengaturan') ? [
                             ...PengaturanlokasiResource::getNavigationItems(),
                             ...PengaturanmediaResource::getNavigationItems(),
                             ...PengaturanpenciptaResource::getNavigationItems(),
@@ -71,15 +72,17 @@ class AdminPanelProvider extends PanelProvider
                             ...PengaturanklasifikasiResource::getNavigationItems(),
                             ...RoleResource::getNavigationItems(),
                             ...PermissionResource::getNavigationItems(),
-                        ])->icon('heroicon-s-cog-8-tooth'),
+                        ] : [])->icon('heroicon-s-cog-8-tooth'),
 
                 ]);
             })
 
             ->colors([
-                'primary' => Color::Emerald,
+                'primary' => "#02558e",
             ])
             ->brandLogo(fn () => view('vendor.filament.components.brand'))
+            ->brandLogoHeight('4rem')
+            ->darkModeBrandLogo('/sinta logo dark.png')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
 

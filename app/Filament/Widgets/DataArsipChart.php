@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon as IluminateCarbon;
 
 class DataArsipChart extends ChartWidget
 {
-    protected static ?string $heading = 'Data Statistik';
+    protected static ?string $heading = 'Data Statistik Semua Arsip';
 
     protected function getData(): array
     {

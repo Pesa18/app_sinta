@@ -19,7 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PengaturanmediaResource extends Resource
 {
     protected static ?string $model = Mastermedia::class;
-
+    protected static ?string $slug = 'media';
+    protected static ?string $pluralLabel = "Pengaturan Media";
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Media';
 

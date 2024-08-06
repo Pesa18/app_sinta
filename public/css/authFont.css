@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'jawa';
+    src: url(./font/JAWAPALSU.TTF) format(truetype);
+}
+
+.font-jawa{
+    font-family: 'jawa';
+    font-size: xx-large;
+}
+

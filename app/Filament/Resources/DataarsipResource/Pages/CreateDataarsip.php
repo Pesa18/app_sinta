@@ -6,6 +6,7 @@ use Filament\Actions;
 use Filament\Support\Assets\Js;
 use Filament\Support\Assets\Css;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Contracts\Support\Htmlable;
 use Filament\Support\Facades\FilamentAsset;
 use App\Filament\Resources\DataarsipResource;
 
@@ -23,5 +24,9 @@ class CreateDataarsip extends CreateRecord
     public function mount(): void
     {
         parent::mount();
+    }
+    public function getTitle(): string | Htmlable
+    {
+        return "Buat Data Arsip";
     }
 }

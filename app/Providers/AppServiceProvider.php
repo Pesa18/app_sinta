@@ -22,11 +22,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         // FilamentAsset::register([
         //     Css::make('filepond-pdf-preview-css', 'https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.css'),
         //     Js::make('filepond-pdf-preview-js', 'https://unpkg.com/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js'),
         //     Js::make('filepond-pdf-preview-js-custom', asset('js/filepond-pdf-preview-costum.js')),
         // ]);
+        FilamentAsset::register([
+            Css::make('JawaFont', asset('css/authFont.css'))
+        ]);
     }
 }

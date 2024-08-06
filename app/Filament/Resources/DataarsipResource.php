@@ -38,7 +38,7 @@ class DataarsipResource extends Resource
 {
     protected static ?string $model = Dataarsip::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box-arrow-down';
     protected static ?string $navigationLabel = 'Arsip';
     protected static ?string $slug = 'data-arsip';
     protected static ?string $pluralLabel = "Data Arsip";
@@ -187,8 +187,8 @@ class DataarsipResource extends Resource
                 return $query->where('user_id', auth()->id())->where('arsip_pegawai_id', NULL);
             })
             ->actions([
-                Action::make('Detail')->label('Detail')->url(fn (Dataarsip $record): string => route('filament.admin.resources.data-arsip.detail-user', $record)),
-                Tables\Actions\EditAction::make(),
+                Action::make('Detail')->button()->color('success')->icon('heroicon-o-eye')->label('Detail')->url(fn (Dataarsip $record): string => route('filament.admin.resources.data-arsip.detail-user', $record)),
+                Tables\Actions\EditAction::make()->button(),
                 Tables\Actions\DeleteAction::make()->label('hapus')->modalHeading('Arsip Akan Di Hapus.')->modalDescription('Yakin mau menghapus ini?')->after(function (Dataarsip $record) {
                     // delete single
                     if ($record->file_arsip) {
@@ -198,7 +198,7 @@ class DataarsipResource extends Resource
                     // if ($record->galery) {
                     //     foreach ($record->galery as $ph) Storage::disk('public')->delete($ph);
                     // }
-                }),
+                })->button(),
 
             ])
             ->headerActions([

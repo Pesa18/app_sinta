@@ -35,10 +35,10 @@ class StatistikData extends BaseWidget
 
 
         return [
-            Stat::make('Jumlah Seluruh Arsip', NumberHumanizer::metricSuffix(Dataarsip::where('arsip_pegawai_id', null)->count()))->description($increase . "Meningkat")
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
+            Stat::make('Jumlah Seluruh Arsip', NumberHumanizer::metricSuffix(Dataarsip::where('arsip_pegawai_id', null)->count()))->description($increase > 0 ? $increase . "meningkat" : $increase . " menurun")
+                ->descriptionIcon($increase > 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->chart($data->map(fn (TrendValue $value) => $value->aggregate)->toArray())
-                ->color('success'),
+                ->color($increase > 0 ? 'success' : 'danger'),
             Stat::make('Jumlah Arsip Pegawai', NumberHumanizer::metricSuffix(Dataarsip::whereNotNull('arsip_pegawai_id')->count())),
             Stat::make('Jumlah User', User::count()),
         ];
